@@ -1,14 +1,12 @@
-
+import { View, Text } from 'react-native'
 import React from 'react'
-
-import HomeScreen from '@/components/screens/HomeScreen'
+import { SplashScreen } from 'expo-router'
 import SplashScreenPersonal from '@/components/screens/SplashScreenPersonal'
 
-const index = () => {
-
+const splash = () => {
   return (
     <SplashScreenPersonal />
   )
 }
 
-export default index
+export default splash

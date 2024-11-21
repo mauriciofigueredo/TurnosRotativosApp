@@ -16,13 +16,14 @@ const layout = () => {
      
       <ApplicationProvider {...eva} theme={theme}>
     
-        <Stack screenOptions={{
+        <Stack  screenOptions={{
           headerStyle: {
             backgroundColor: '#32217b',
           },
           headerTintColor: '#d6cef5',
           headerTitleAlign: 'center'
         }}>
+            <Stack.Screen name='home' options={{title: 'Splash', animation:'ios'}}/>
             <Stack.Screen name='index' options={{title: 'Turnos Redes', animation:'ios'}}/>
             <Stack.Screen name='edit'options={{title: 'Ver Base de Datos', animation:'ios'}}/>
             <Stack.Screen name='update' options={{title: 'Actualizar fechas', animation: 'ios'}}/>
