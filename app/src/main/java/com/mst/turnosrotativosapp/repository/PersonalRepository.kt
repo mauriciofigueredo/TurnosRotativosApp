@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-abstract class PersonalRepository @Inject constructor(private val personalDao: PersonalDao)  {
+class PersonalRepository @Inject constructor(private val personalDao: PersonalDao)  {
 
     suspend fun addPersonal(personal: Personal) = personalDao.insertPersonal(personal)
     suspend fun updatePersonal(personal: Personal) = personalDao.updatePersonal(personal)

@@ -15,7 +15,7 @@ interface PersonalDao {
     @Query("select * from personal")
     fun getAll(): Flow<List<Personal>>
 
-    @Query("select * from personal where nombre= :nombre")
+    @Query("select * from personal where id = :id")
     fun getById(id: Long): Flow<Personal>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
