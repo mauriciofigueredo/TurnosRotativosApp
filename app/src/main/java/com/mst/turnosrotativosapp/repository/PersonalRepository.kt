@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class PersonalRepository @Inject constructor(private val personalDao: PersonalDao)  {
-
+    //Aqui se mapean los metodos que se usaran en el viewmodel
     suspend fun addPersonal(personal: Personal) = personalDao.insertPersonal(personal)
     suspend fun updatePersonal(personal: Personal) = personalDao.updatePersonal(personal)
     suspend fun deletePersonal(personal: Personal) = personalDao.deletePersonal(personal)
