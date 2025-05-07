@@ -15,10 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mst.turnosrotativosapp.components.FloatButton
 import com.mst.turnosrotativosapp.components.MainTitle
+import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(navController: NavController){
+fun HomeView(navController: NavController, personalVM: PersonalViewModel){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -30,12 +31,12 @@ fun HomeView(navController: NavController){
         }
 
     ) {
-        HomeContent(it, navController)
+        HomeContent(it, navController, personalVM)
     }
 }
 
 @Composable
-fun HomeContent(paddingValues: PaddingValues, navController: NavController){
+fun HomeContent(paddingValues: PaddingValues, navController: NavController, personalVM: PersonalViewModel){
     Column(
         modifier = Modifier
             .padding(paddingValues)

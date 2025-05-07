@@ -7,9 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 
 @Composable
-fun EditView(navController: NavController){
+fun EditView(navController: NavController, personalVM: PersonalViewModel){
 
     Text("Edit View")
 }
