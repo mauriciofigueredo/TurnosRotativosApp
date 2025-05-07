@@ -43,6 +43,7 @@ fun MainIconButton(icon: ImageVector, onClick:() -> Unit){
 fun CircleButton(
     icon: ImageVector,
     enabled: Boolean = false,
+    size: Int,
     onClick: () -> Unit
 ){
     Button(
@@ -55,6 +56,6 @@ fun CircleButton(
         Icon(
             imageVector = icon,
             contentDescription = "Agregar personal",
-            modifier = Modifier.size(24.dp))
+            modifier = Modifier.size(size.dp))
     }
 }

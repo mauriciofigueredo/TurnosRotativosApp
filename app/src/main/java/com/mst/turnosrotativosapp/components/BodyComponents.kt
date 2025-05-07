@@ -24,7 +24,6 @@ fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String)
         onValueChange = onValueChange,
         label = { Text(text = label) },
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = 30.dp)
             .padding(bottom = 15.dp)
 
