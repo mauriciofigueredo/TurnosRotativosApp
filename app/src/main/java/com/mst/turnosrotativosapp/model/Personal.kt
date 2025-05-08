@@ -10,5 +10,5 @@ data class Personal(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val nombre : String,
-    val fecha_ini : Long
+    val fecha_ini : String
 )
