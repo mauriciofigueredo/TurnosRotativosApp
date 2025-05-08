@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -34,6 +36,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -89,21 +92,25 @@ fun DatePickerDocked() {
         )
 
         if (showDatePicker) {
-            Popup(
+            DatePickerDialog (
                 onDismissRequest = { showDatePicker = false },
-                alignment = Alignment.CenterHorizontally as Alignment
+                confirmButton = { Button(onClick = {showDatePicker=false}){Text("Confirmar")} },
+                dismissButton = { OutlinedButton(onClick = {showDatePicker=false}) { Text("Cancelar")} }
             ) {
+
                 Box(
                     modifier = Modifier
                         //.fillMaxWidth()
-                        .offset(y = 64.dp)
-                        .shadow(elevation = 4.dp)
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(16.dp)
+                        .offset(y = 1.dp)
+                        .shadow(elevation = 1.dp)
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(bottom = 12.dp)
                 ) {
                     DatePicker(
                         state = datePickerState,
+                        title = {Text(text = "1er Turnno por la mañana", fontSize = 25.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp).padding(start = 8.dp))},
                         showModeToggle = false,
+
                     )
                 }
             }
