@@ -23,6 +23,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     private val _personalList = MutableStateFlow<List<Personal>>(emptyList())
     val personalList = _personalList.asStateFlow()
 
+    //Variable para manipular los valores que va ingresando el usuario
     var personal by mutableStateOf(PersonalState())
         private set
 
@@ -31,7 +32,6 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
             personal = personal.copy(nombre=value)
         }else{
             personal = personal.copy(fecha = value)
-
         }
     }
 
