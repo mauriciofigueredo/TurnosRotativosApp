@@ -1,12 +1,18 @@
 package com.mst.turnosrotativosapp.viewmodel
 
 
+import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mst.turnosrotativosapp.components.convertMillisToDate
 
 import com.mst.turnosrotativosapp.model.Personal
 import com.mst.turnosrotativosapp.repository.PersonalRepository
@@ -18,6 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @HiltViewModel
 class PersonalViewModel @Inject constructor(private val repository: PersonalRepository) : ViewModel() {
     private val _personalList = MutableStateFlow<List<Personal>>(emptyList())
@@ -35,10 +42,12 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
         }
     }
 
+
+    //--Fin variables date picker
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAll().collect { item ->
-                if(item.isNullOrEmpty()){
+                if(item.isEmpty()){
                     _personalList.value = emptyList()
                 }else{
                     _personalList.value = item
