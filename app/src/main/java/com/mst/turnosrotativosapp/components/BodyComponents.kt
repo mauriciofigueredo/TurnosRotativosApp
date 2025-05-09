@@ -110,7 +110,6 @@ fun DatePickerDocked() {
                         state = datePickerState,
                         title = {Text(text = "1er Turnno por la mañana", fontSize = 25.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp).padding(start = 8.dp))},
                         showModeToggle = false,
-
                     )
                 }
             }
