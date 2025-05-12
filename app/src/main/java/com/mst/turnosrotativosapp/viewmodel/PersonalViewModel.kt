@@ -1,6 +1,7 @@
 package com.mst.turnosrotativosapp.viewmodel
 
 
+import android.util.Log
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
@@ -46,10 +47,13 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     //--Fin variables date picker
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            var turnos: List<String>
             repository.getAll().collect { item ->
                 if(item.isEmpty()){
                     _personalList.value = emptyList()
                 }else{
+
+                   turnos = calcularTurnos(item)
                     _personalList.value = item
                 }
 
@@ -60,13 +64,17 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     fun addPersonal(personal: Personal) = viewModelScope.launch{ repository.addPersonal(personal) }
     fun updatePersonal(personal: Personal) = viewModelScope.launch{ repository.updatePersonal(personal) }
     fun deletePersonal(personal: Personal) = viewModelScope.launch{ repository.deletePersonal(personal) }
-    suspend fun calcularTurnos(){
-        var turno : List<>
-        var equipos = repository.getAll().collect {item ->
-            if (item.isNotEmpty()){
 
-            }
-        }
+    //Funcion para calcular y devolver listado de turnos
+    fun calcularTurnos(personal: List<Personal>): List<String>{
+        var turno = listOf<String>()
+
+        return turnos
 
     }
+
+}
+
+fun calcularFechas(){
+
 }
