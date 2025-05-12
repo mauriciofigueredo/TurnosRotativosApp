@@ -1,10 +1,14 @@
 package com.mst.turnosrotativosapp.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -14,7 +18,9 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,10 +40,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import com.mst.turnosrotativosapp.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -123,6 +131,42 @@ fun convertMillisToDate(millis: Long): String {
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return formatter.format(Date(millis))
 }
+
+@Composable
+fun personalCard(nombre: String, fecha: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+            .clickable {  }
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Text(
+                text = nombre,
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Row(modifier = Modifier.padding(bottom = 10.dp)){
+                Icon(
+                    painter = painterResource(R.drawable.baseline_group_24),
+                    contentDescription = "",
+                    tint = Color.Gray
+                )
+                Spacer(modifier = Modifier.padding(horizontal = 25.dp))
+                Text(text = fecha, fontSize = 20.sp)
+            }
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp),
+                color = MaterialTheme.colorScheme.primary
+            )
+
+        }
+    }}
 
 /*@Composable
 fun DatePickerFieldToModal(modifier: Modifier = Modifier) {

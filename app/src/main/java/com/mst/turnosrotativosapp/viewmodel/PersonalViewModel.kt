@@ -60,5 +60,13 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     fun addPersonal(personal: Personal) = viewModelScope.launch{ repository.addPersonal(personal) }
     fun updatePersonal(personal: Personal) = viewModelScope.launch{ repository.updatePersonal(personal) }
     fun deletePersonal(personal: Personal) = viewModelScope.launch{ repository.deletePersonal(personal) }
+    suspend fun calcularTurnos(){
+        var turno : List<>
+        var equipos = repository.getAll().collect {item ->
+            if (item.isNotEmpty()){
 
+            }
+        }
+
+    }
 }
