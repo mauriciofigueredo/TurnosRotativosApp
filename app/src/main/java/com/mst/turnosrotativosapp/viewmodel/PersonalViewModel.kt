@@ -53,7 +53,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
                     _personalList.value = emptyList()
                 }else{
 
-                   turnos = calcularTurnos(item)
+                   //turnos = calcularTurnos(item)
                     _personalList.value = item
                 }
 
@@ -66,15 +66,12 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     fun deletePersonal(personal: Personal) = viewModelScope.launch{ repository.deletePersonal(personal) }
 
     //Funcion para calcular y devolver listado de turnos
-    fun calcularTurnos(personal: List<Personal>): List<String>{
-        var turno = listOf<String>()
-
-        return turnos
-
-    }
-
-}
-
-fun calcularFechas(){
+//    fun calcularTurnos(personal: List<Personal>): List<String>{
+//        var turno = listOf<String>()
+//
+//        return turnos
+//
+//    }
 
 }
+

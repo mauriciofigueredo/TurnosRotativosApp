@@ -55,6 +55,8 @@ import com.mst.turnosrotativosapp.components.convertMillisToDate
 import com.mst.turnosrotativosapp.model.Personal
 import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 import java.nio.file.WatchEvent
+import java.time.Instant
+import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,72 +94,51 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
         Spacer(modifier = Modifier.padding(vertical = 15.dp))
 
         //-----Date Picker
-        var showDatePicker by remember { mutableStateOf(false) }
-        val datePickerState = rememberDatePickerState()
-        val selectedDate = datePickerState.selectedDateMillis?.let {
-            convertMillisToDate(it)
-        } ?: ""
+        var showDate by remember { mutableStateOf(false) }
+        val state = rememberDatePickerState()
 
-        Box(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            OutlinedTextField(
-                value = selectedDate,
-                onValueChange = { },
-                label = { Text("Inicio turno mañana") },
-                readOnly = true,
-                trailingIcon = {
-                    IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Select date"
-                        )
-                    }
+        Button(onClick = {showDate = !showDate}) { Text("Asignar Fecha") }
+
+
+        if (showDate){
+            DatePickerDialog(
+                onDismissRequest = {showDate = !showDate},
+                confirmButton = {Button(onClick = {showDate = !showDate}) {Text("Aceptar") }},
+                dismissButton = { OutlinedButton(onClick = {showDate = !showDate}) {Text("Cancelar") } }
+            ) {
+                DatePicker(state = state, title = {
+                    Text(text = "Selleccionar fecha", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-            )
 
-            if (showDatePicker) {
-                DatePickerDialog (
-                    onDismissRequest = { showDatePicker = false },
-                    confirmButton = { Button(onClick = {showDatePicker=false}){Text("Confirmar")} },
-                    dismissButton = { OutlinedButton(onClick = {showDatePicker=false}) { Text("Cancelar")} }
-                ) {
+                    )
 
-                    Box(
-                        modifier = Modifier
-                            //.fillMaxWidth()
-                            .offset(y = 1.dp)
-                            .shadow(elevation = 1.dp)
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(bottom = 12.dp)
-                    ) {
-                        DatePicker(
-                            state = datePickerState,
-                            title = {Text(text = "1er Turnno por la mañana", fontSize = 25.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp).padding(start = 8.dp))},
-                            showModeToggle = false,
-
-                            )
-                    }
-                }
             }
         }
-        //DatePickerDocked()
+        val date = state.selectedDateMillis
+        date?.let {
+            val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+            Spacer(modifier = Modifier.padding(vertical = 20.dp))
+            Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - ${selectDate.month}")
+            Spacer(modifier = Modifier.padding(vertical = 20.dp))
+            //if(personalVM.personal.nombre.isNotEmpty()){
+                FilledTonalButton(
+                    onClick = {personalVM.addPersonal(
+                        Personal(nombre = personalVM.personal.nombre,
+                            fecha_ini = state.selectedDateMillis.toString()
+                        ))
+                        navController.popBackStack()},
+                    border = BorderStroke(1.dp, Color.Cyan),
+                    shape = CircleShape,
+                    enabled = personalVM.personal.nombre.isNotEmpty()
+                ) { Text("Agregar") }
+
+
+        }
+
+
 
         //-----
-        Spacer(modifier = Modifier.padding(vertical = 35.dp))
 
-        FilledTonalButton(
-            onClick = {personalVM.addPersonal(
-                Personal(nombre = personalVM.personal.nombre,
-                    fecha_ini = selectedDate.toString()
-            ))
-                      navController.popBackStack()},
-            border = BorderStroke(1.dp, Color.Cyan),
-            shape = CircleShape
-        ) { Text("Agregar") }
 
     }
 }
