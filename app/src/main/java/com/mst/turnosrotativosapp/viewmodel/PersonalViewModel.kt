@@ -30,6 +30,7 @@ import javax.inject.Inject
 class PersonalViewModel @Inject constructor(private val repository: PersonalRepository) : ViewModel() {
     private val _personalList = MutableStateFlow<List<Personal>>(emptyList())
     val personalList = _personalList.asStateFlow()
+    
 
     //Variable para manipular los valores que va ingresando el usuario
     var personal by mutableStateOf(PersonalState())
@@ -40,6 +41,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
             personal = personal.copy(nombre=value)
         }else{
             personal = personal.copy(fecha = value)
+
         }
     }
 
@@ -61,7 +63,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
         }
     }
 
-    fun addPersonal(personal: Personal) = viewModelScope.launch{ repository.addPersonal(personal) }
+    fun addPersonal(personal: Personal) = viewModelScope.launch{ repository.addPersonal(personal)  }
     fun updatePersonal(personal: Personal) = viewModelScope.launch{ repository.updatePersonal(personal) }
     fun deletePersonal(personal: Personal) = viewModelScope.launch{ repository.deletePersonal(personal) }
 

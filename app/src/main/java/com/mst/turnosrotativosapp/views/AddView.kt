@@ -126,6 +126,7 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
                         Personal(nombre = personalVM.personal.nombre,
                             fecha_ini = state.selectedDateMillis.toString()
                         ))
+                        personalVM.onValueChange("","nombre")
                         navController.popBackStack()},
                     border = BorderStroke(1.dp, Color.Cyan),
                     shape = CircleShape,
