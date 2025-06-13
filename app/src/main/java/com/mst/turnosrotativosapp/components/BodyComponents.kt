@@ -1,34 +1,27 @@
 package com.mst.turnosrotativosapp.components
 
-import androidx.compose.foundation.background
+
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.Divider
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,23 +29,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
 import com.mst.turnosrotativosapp.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun MainTitle(title: String) {
-    Text(text = title, color = Color.White, fontWeight = FontWeight.Bold)
+fun MainTitle(title: String, color: Color ) {
+    Text(text = title, color = color, fontWeight = FontWeight.Bold)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,168 +59,116 @@ fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String)
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerDocked() {
-    var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
 
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            value = selectedDate,
-            onValueChange = { },
-            label = { Text("Inicio turno mañana") },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
-                    )
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-        )
-
-        if (showDatePicker) {
-            DatePickerDialog (
-                onDismissRequest = { showDatePicker = false },
-                confirmButton = { Button(onClick = {showDatePicker=false}){Text("Confirmar")} },
-                dismissButton = { OutlinedButton(onClick = {showDatePicker=false}) { Text("Cancelar")} }
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        //.fillMaxWidth()
-                        .offset(y = 1.dp)
-                        .shadow(elevation = 1.dp)
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(bottom = 12.dp)
-                ) {
-                    DatePicker(
-                        state = datePickerState,
-                        title = {Text(text = "1er Turnno por la mañana", fontSize = 25.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp).padding(start = 8.dp))},
-                        showModeToggle = false,
-                    )
-                }
-            }
-        }
-    }//Box
-
-
-}
 
 fun convertMillisToDate(millis: Long): String {
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return formatter.format(Date(millis))
 }
 
+@SuppressLint("UnrememberedMutableState")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun personalCard(nombre: String, fecha: String) {
-    Box(
+fun PersonalCard(nombre: String, turno: String, dia: String, onClick: ()->Unit) {
+    var showConfirmDelete by remember{ mutableStateOf(false)}
+
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.inverseOnSurface,
+        ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            .clickable {  }
+            .padding(horizontal = 15.dp, vertical = 10.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(20.dp)
-        ) {
+
+
+        Row(horizontalArrangement = Arrangement.Center) {
             Text(
                 text = nombre,
                 fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(10.dp).fillMaxWidth()
             )
+        }
 
-            Row(modifier = Modifier.padding(bottom = 10.dp)){
-                Icon(
-                    painter = painterResource(R.drawable.baseline_group_24),
-                    contentDescription = "",
-                    tint = Color.Gray
-                )
-                Spacer(modifier = Modifier.padding(horizontal = 25.dp))
-                Text(text = fecha, fontSize = 20.sp)
-            }
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp),
-                color = MaterialTheme.colorScheme.primary
+
+        Row(
+            modifier = Modifier
+                .padding(bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.baseline_group_24),
+                contentDescription = "",
+                tint = Color.Gray,
+                modifier = Modifier.padding(start = 10.dp)
             )
+            Spacer(modifier = Modifier.padding(horizontal = 25.dp))
+
+            //Turno
+            Text(text = turno, fontSize = 20.sp, color = Color.Gray)
+            Spacer(modifier = Modifier.padding(horizontal = 25.dp))
+
+            //Dia
+            Text(text = "Dia: $dia", fontSize = 20.sp, color = Color.Gray)
+            Spacer(modifier = Modifier.padding(horizontal = 15.dp))
+
+            //Borrar
+            IconButton(onClick={ showConfirmDelete = true}
+            ) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar")
+            }
+            ConfirmationAlertDialog(showConfirmDelete, onConfirm = {showConfirmDelete = false}, onDismiss = { showConfirmDelete=false})
 
         }
-    }}
+    }
+}
 
-/*@Composable
-fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
-    var showModal by remember { mutableStateOf(false) }
-
-    OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "",
-        onValueChange = { },
-        label = { Text("DOB") },
-        placeholder = { Text("MM/DD/YYYY") },
-        trailingIcon = {
-            Icon(Icons.Default.DateRange, contentDescription = "Select date")
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .pointerInput(selectedDate) {
-                awaitEachGesture {
-                    // Modifier.clickable doesn't work for text fields, so we use Modifier.pointerInput
-                    // in the Initial pass to observe events before the text field consumes them
-                    // in the Main pass.
-                    awaitFirstDown(pass = PointerEventPass.Initial)
-                    val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                    if (upEvent != null) {
-                        showModal = true
+@Composable
+fun ConfirmationAlertDialog(
+    showDialog: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                // Se invoca cuando el usuario intenta descartar el diálogo haciendo clic fuera
+                // o presionando el botón "atrás".
+                onDismiss()
+            },
+            title = {
+                Text(text = "Confirmar eliminación")
+            },
+            text = {
+                Text(text = "¿Estás seguro de que quieres eliminar este registro? Esta acción no se puede deshacer.")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onConfirm()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Confirmar", color = Color.White)
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        onDismiss()
                     }
+                ) {
+                    Text("Cancelar")
                 }
             }
-    )
-
-    if (showModal) {
-        DatePickerModal(
-            onDateSelected = { selectedDate = it },
-            onDismiss = { showModal = false }
         )
     }
 }
 
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerModal(
-    onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit
-) {
-    val datePickerState = rememberDatePickerState()
-
-    DatePickerDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = {
-                onDateSelected(datePickerState.selectedDateMillis)
-                onDismiss()
-            }) {
-                Text("OK")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    ) {
-        DatePicker(state = datePickerState)
-    }
-}*/

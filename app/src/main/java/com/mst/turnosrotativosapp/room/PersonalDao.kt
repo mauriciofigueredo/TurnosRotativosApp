@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PersonalDao {
 
-    @Query("select * from personal")
+    @Query("select * from personal order by nombre")
     fun getAll(): Flow<List<Personal>>
 
     @Query("select * from personal where id = :id")
@@ -26,5 +26,8 @@ interface PersonalDao {
 
     @Delete
     suspend fun deletePersonal(personal: Personal)
+
+    @Query("select * from personal where nombre = :nombre")
+    fun getByNombre(nombre: String): Flow<Personal>
 
 }

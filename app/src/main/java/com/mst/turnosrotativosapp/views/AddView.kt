@@ -1,38 +1,22 @@
 package com.mst.turnosrotativosapp.views
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,20 +25,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mst.turnosrotativosapp.components.CircleButton
-import com.mst.turnosrotativosapp.components.DatePickerDocked
 import com.mst.turnosrotativosapp.components.MainTextField
 import com.mst.turnosrotativosapp.components.MainTitle
-import com.mst.turnosrotativosapp.components.convertMillisToDate
 import com.mst.turnosrotativosapp.model.Personal
 import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
-import java.nio.file.WatchEvent
 import java.time.Instant
 import java.time.ZoneId
 
@@ -63,7 +42,7 @@ import java.time.ZoneId
 fun AddView(navController: NavController, personalVM: PersonalViewModel) {
     Scaffold(
         topBar = { CenterAlignedTopAppBar(
-            title = { MainTitle("Add Personal") }
+            title = { MainTitle(title = "Agregar Personal", color = MaterialTheme.colorScheme.outline) }
         )},
 
     ) {
@@ -95,10 +74,11 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
 
         //-----Date Picker
         var showDate by remember { mutableStateOf(false) }
-        val state = rememberDatePickerState()
+
 
         Button(onClick = {showDate = !showDate}) { Text("Asignar Fecha") }
 
+        val state = rememberDatePickerState()
 
         if (showDate){
             DatePickerDialog(
@@ -135,10 +115,6 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
 
 
         }
-
-
-
-        //-----
 
 
     }

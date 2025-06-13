@@ -15,4 +15,6 @@ class PersonalRepository @Inject constructor(private val personalDao: PersonalDa
     suspend fun deletePersonal(personal: Personal) = personalDao.deletePersonal(personal)
     fun getAll(): Flow<List<Personal>> = personalDao.getAll().flowOn(Dispatchers.IO).conflate()
     fun getPersonalById(id: Long): Flow<Personal> = personalDao.getById(id).flowOn(Dispatchers.IO).conflate()
+    fun getPersonalByNombre(nombre: String): Flow<Personal> = personalDao.getByNombre(nombre).flowOn(Dispatchers.IO).conflate()
+
 }
