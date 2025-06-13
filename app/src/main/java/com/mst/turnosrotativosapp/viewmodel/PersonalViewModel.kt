@@ -96,6 +96,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
 
                         turnos.add(
                             TurnoState(
+                                id = item.id,
                                 nombre = item.nombre,
                                 turno = "Mañana",
                                 dia = dia.toString()
@@ -104,8 +105,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
                     }
                 }
             }
-            println("TurnosArray $turnos")
-            println("TrunosLength ${turnos.size}")
+
             return turnos
         }
 

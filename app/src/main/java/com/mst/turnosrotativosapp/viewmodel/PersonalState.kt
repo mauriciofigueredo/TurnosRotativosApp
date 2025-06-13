@@ -7,6 +7,7 @@ data class PersonalState(
 
 
 data class TurnoState(
+    val id : Long,
     val nombre : String,
     val turno: String,
     val dia: String
