@@ -14,11 +14,18 @@ import androidx.lifecycle.viewModelScope
 import com.mst.turnosrotativosapp.model.Personal
 import com.mst.turnosrotativosapp.repository.PersonalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
@@ -73,11 +80,13 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     fun addPersonal(personal: Personal) =
         viewModelScope.launch { repository.addPersonal(personal) }
 
+
+
     fun updatePersonal(personal: Personal) =
         viewModelScope.launch { repository.updatePersonal(personal) }
 
-    fun deletePersonal(personal: Personal) =
-        viewModelScope.launch { repository.deletePersonal(personal) }
+    fun deletePersonal(id: Long) =
+        viewModelScope.launch { repository.deletePersonal(id) }
 
 
         fun calcularTurnos(): List<TurnoState> {

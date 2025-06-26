@@ -2,7 +2,7 @@ package com.mst.turnosrotativosapp.components
 
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,8 +21,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +36,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mst.turnosrotativosapp.R
+import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -69,7 +73,7 @@ fun convertMillisToDate(millis: Long): String {
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PersonalCard(nombre: String, turno: String, dia: String, onClick: ()->Unit) {
+fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM: PersonalViewModel) {
     var showConfirmDelete by remember{ mutableStateOf(false)}
 
     Card(
@@ -124,10 +128,30 @@ fun PersonalCard(nombre: String, turno: String, dia: String, onClick: ()->Unit) 
             ) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar")
             }
-            ConfirmationAlertDialog(showConfirmDelete, onConfirm = {showConfirmDelete = false}, onDismiss = { showConfirmDelete=false})
+            ConfirmationAlertDialog(
+                showConfirmDelete,
+                onConfirm = {
+                    runBlocking {
+                        val myJob = launch(Dispatchers.IO) {
+                            personalVM.deletePersonal(id)
+                    }
+                        if(myJob.isCompleted){
+                            println("Registro borrado exitosamente")
+                        }
+                    }
+
+
+                    showConfirmDelete = false
+                },
+                onDismiss = { showConfirmDelete=false})
 
         }
     }
+
+//    LaunchedEffect(Unit) {
+//        var personal = personalVM.getPersonalById(id)
+//
+//    }
 }
 
 @Composable

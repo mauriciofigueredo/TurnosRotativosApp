@@ -156,12 +156,7 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController, pers
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(lista) { item ->
-                PersonalCard(item.nombre, item.turno, item.dia)
-                {
-                    navController.navigate(route = "EditView/${item.nombre}")
-                }
-
-
+                PersonalCard(item.id, item.nombre, item.turno, item.dia, personalVM)
 
             }
         }

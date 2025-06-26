@@ -15,19 +15,16 @@ interface PersonalDao {
     @Query("select * from personal order by nombre")
     fun getAll(): Flow<List<Personal>>
 
-    @Query("select * from personal where id = :id")
-    fun getById(id: Long): Flow<Personal>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+   @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPersonal(personal: Personal)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePersonal(personal: Personal)
 
-    @Delete
-    suspend fun deletePersonal(personal: Personal)
+    @Query("delete from personal where id = :id ")
+    suspend fun deletePersonal(id: Long)
 
     @Query("select * from personal where nombre = :nombre")
-    fun getByNombre(nombre: String): Flow<Personal>
+    fun getByNombre(nombre: String): Flow<Personal?>
 
 }
