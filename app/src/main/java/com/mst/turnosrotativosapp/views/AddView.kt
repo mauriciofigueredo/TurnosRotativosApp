@@ -35,6 +35,7 @@ import com.mst.turnosrotativosapp.components.MainTitle
 import com.mst.turnosrotativosapp.model.Personal
 import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +68,7 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
 
         MainTextField(
             value = personalVM.personal.nombre,
-            onValueChange = { personalVM.onValueChange(it, "nombre") },
+            onValueChange = { personalVM.onValueChange(it) },
             label = "Personal"
         )
         Spacer(modifier = Modifier.padding(vertical = 15.dp))
@@ -98,15 +99,17 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
         date?.let {
             val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
+            println("Fecha ss -> $selectDate")
             Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - ${selectDate.month}")
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
             //if(personalVM.personal.nombre.isNotEmpty()){
                 FilledTonalButton(
                     onClick = {personalVM.addPersonal(
                         Personal(nombre = personalVM.personal.nombre,
-                            fecha_ini = state.selectedDateMillis.toString()
+                            fecha_ini = selectDate.toString()
+                            //fecha_ini = state.selectedDateMillis.toString()
                         ))
-                        personalVM.onValueChange("","nombre")
+                        personalVM.onValueChange("")
                         navController.popBackStack()},
                     border = BorderStroke(1.dp, Color.Cyan),
                     shape = CircleShape,

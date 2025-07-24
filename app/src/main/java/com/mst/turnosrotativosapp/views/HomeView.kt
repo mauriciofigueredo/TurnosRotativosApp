@@ -3,7 +3,6 @@ package com.mst.turnosrotativosapp.views
 
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -63,51 +62,44 @@ fun HomeView(navController: NavController, personalVM: PersonalViewModel){
                     titleContentColor = MaterialTheme.colorScheme.primary
                 )
             )
-        }, containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        }, containerColor = MaterialTheme.colorScheme.inversePrimary,
         floatingActionButton = {
             FloatButton { navController.navigate("AddView") }
         }
 
     ) {
-        HomeContent(it, navController, personalVM)
+        HomeContent(it, personalVM)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContent(paddingValues: PaddingValues, navController: NavController, personalVM: PersonalViewModel) {
+fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
 
    Column(
         modifier = Modifier
             .padding(paddingValues),
     ) {
-        //DateSelector()
-
-
-        //IconAndTextRow()
-
         val actualDate by personalVM.selectedDate.collectAsState()
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(15.dp),
-            verticalAlignment = Alignment.CenterVertically, // Alinea verticalmente al centro
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "Fecha: ${actualDate.dayOfMonth} ${actualDate.month}",
                 fontWeight = FontWeight.W400, fontSize = 20.sp,
                 fontFamily = FontFamily.Default,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-
+                color = MaterialTheme.colorScheme.inverseSurface
             )
             Spacer(modifier = Modifier.width(25.dp)) // Espacio entre el icono y el texto
 
             //---------------- DatePicker
             var showDate by remember { mutableStateOf(false) }
             val datePickerState = rememberDatePickerState()
-
-
 
             IconButton (
                 onClick = {showDate = !showDate},
@@ -140,8 +132,6 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController, pers
                 personalVM.selectedDateChange(Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate())
             }
 
-
-
             //----------------
 
         }
@@ -151,17 +141,21 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController, pers
 
             )
 
+           var lista = personalVM.personalList.collectAsState()
 
-        val lista = personalVM.calcularTurnos()
 
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(lista) { item ->
-                PersonalCard(item.id, item.nombre, item.turno, item.dia, personalVM)
+       LazyColumn(modifier = Modifier.fillMaxWidth()) {
+           items(lista.value) { item ->
+               val (turno, dia) = personalVM.calcularTurno(item)
+               PersonalCard(item.id, item.nombre, turno, dia.toString(), personalVM) //item.turno, item.dia, personalVM
 
-            }
-        }
+           }
+       }}
+
+
+
     }
-}
+
 
 
 

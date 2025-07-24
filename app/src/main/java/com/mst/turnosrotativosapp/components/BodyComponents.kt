@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -135,15 +136,11 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
                         val myJob = launch(Dispatchers.IO) {
                             personalVM.deletePersonal(id)
                     }
-                        if(myJob.isCompleted){
-                            println("Registro borrado exitosamente")
-                        }
                     }
-
-
                     showConfirmDelete = false
                 },
                 onDismiss = { showConfirmDelete=false})
+            val context = LocalContext
 
         }
     }
@@ -194,5 +191,7 @@ fun ConfirmationAlertDialog(
             }
         )
     }
-}
+}//ConfirmationAlertDialog
+
+
 
