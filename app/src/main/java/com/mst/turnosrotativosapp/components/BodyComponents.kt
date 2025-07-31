@@ -79,7 +79,7 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
 
     Card(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 6.dp
         ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.inverseOnSurface,
@@ -96,14 +96,14 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(10.dp).fillMaxWidth()
+                modifier = Modifier.padding(8.dp).fillMaxWidth()
             )
         }
 
 
         Row(
             modifier = Modifier
-                .padding(bottom = 8.dp),
+                .padding(bottom = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
 
@@ -117,17 +117,17 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
             Spacer(modifier = Modifier.padding(horizontal = 25.dp))
 
             //Turno
-            Text(text = turno, fontSize = 20.sp, color = Color.Gray)
+            Text(text = turno, fontSize = 20.sp, color = MaterialTheme.colorScheme.secondary)
             Spacer(modifier = Modifier.padding(horizontal = 25.dp))
 
             //Dia
-            Text(text = "Dia: $dia", fontSize = 20.sp, color = Color.Gray)
+            Text(text = "Dia: $dia", fontSize = 20.sp, color = MaterialTheme.colorScheme.secondary)
             Spacer(modifier = Modifier.padding(horizontal = 15.dp))
 
             //Borrar
             IconButton(onClick={ showConfirmDelete = true}
             ) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar")
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar", tint = Color.Gray)
             }
             ConfirmationAlertDialog(
                 showConfirmDelete,

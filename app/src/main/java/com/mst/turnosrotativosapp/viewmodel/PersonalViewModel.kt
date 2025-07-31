@@ -91,8 +91,6 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
             var turno: String = ""
             var dia: Int = 0
 
-
-
                             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                             val fechaTurno: LocalDate = LocalDate.parse(personal.fecha_ini, formatter)
                             val diff: Long = ChronoUnit.DAYS.between(fechaTurno, selectedDate.value )
@@ -113,7 +111,8 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     fun calculoDia(diff: Long): Int {
         //val dia = (diff / 83400000).toInt()
         //val diaEnCiclo = (dia - 1) % 6 + 1 // dia del gemini
-        val diaEnCiclo = (diff.toInt() - 1) % 6 +1
+        val diaEnCiclo = (diff.toInt() ) % 6 +1
+        println("Dife -> $diaEnCiclo")
         return diaEnCiclo
     }
 //-----------------------

@@ -31,11 +31,12 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +49,7 @@ import com.mst.turnosrotativosapp.components.MainTitle
 import com.mst.turnosrotativosapp.components.PersonalCard
 import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,6 +77,7 @@ fun HomeView(navController: NavController, personalVM: PersonalViewModel){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
+    val context = LocalContext.current
 
    Column(
         modifier = Modifier
@@ -101,27 +104,41 @@ fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
             var showDate by remember { mutableStateOf(false) }
             val datePickerState = rememberDatePickerState()
 
-            IconButton (
-                onClick = {showDate = !showDate},
+            IconButton(
+                onClick = { showDate = !showDate },
                 enabled = true,
                 colors = IconButtonDefaults.iconButtonColors(),
-            ){
+            ) {
                 Icon(
-                    painter =  painterResource(R.drawable.calendar),
+                    painter = painterResource(R.drawable.calendar),
                     contentDescription = "Calendar",
                 )
             }
 
 
-            if (showDate){
+            if (showDate) {
                 DatePickerDialog(
-                    onDismissRequest = {showDate = !showDate},
-                    confirmButton = {Button(onClick = {showDate = !showDate}) {Text("Aceptar") }},
-                    dismissButton = { OutlinedButton(onClick = {showDate = !showDate}) {Text("Cancelar") } }
-                ) {
-                    DatePicker(state = datePickerState, title = {
-                        Text(text = "Selleccionar fecha", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    onDismissRequest = { showDate = !showDate },
+                    confirmButton = {
+                        Button(onClick = {
+                            showDate = !showDate
+                        }) { Text("Aceptar") }
                     },
+                    dismissButton = {
+                        OutlinedButton(onClick = {
+                            showDate = !showDate
+                        }) { Text("Cancelar") }
+                    }
+                ) {
+                    DatePicker(
+                        state = datePickerState,
+                        title = {
+                            Text(
+                                text = "Selleccionar fecha",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
 
                         )
 
@@ -129,9 +146,20 @@ fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
             }
             val date = datePickerState.selectedDateMillis
             date?.let {
-                personalVM.selectedDateChange(Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate())
-            }
 
+
+            val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+            val fechaActual: LocalDate = LocalDate.now()
+
+            if (fechaActual.isBefore(selectDate)) {
+                personalVM.selectedDateChange(
+                    Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+                )
+
+            } else {
+                showToast(context, "No puede seleccionar una fecha anterior a la de hoy")
+            }
+        }
             //----------------
 
         }

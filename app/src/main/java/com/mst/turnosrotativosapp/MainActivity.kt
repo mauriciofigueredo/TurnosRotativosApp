@@ -20,6 +20,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val personalVM: PersonalViewModel by viewModels()
         enableEdgeToEdge()
+
+
         setContent {
             TurnosRotativosAppTheme {
                 Surface(
