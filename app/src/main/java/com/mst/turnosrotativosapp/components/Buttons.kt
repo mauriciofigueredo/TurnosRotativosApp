@@ -3,6 +3,7 @@ package com.mst.turnosrotativosapp.components
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
@@ -23,11 +25,13 @@ fun FloatButton(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = Color.White
+        contentColor = Color.White,
+        modifier = Modifier.size(30.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Agregar"
+            contentDescription = "Agregar",
+            Modifier.size(18.dp)
         )
     }
 }

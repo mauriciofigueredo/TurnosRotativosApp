@@ -2,11 +2,11 @@ package com.mst.turnosrotativosapp.components
 
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,9 +39,6 @@ import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun MainTitle(title: String, color: Color ) {
@@ -66,10 +61,10 @@ fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String)
 
 
 
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
-}
+//fun convertMillisToDate(millis: Long): String {
+//    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+//    return formatter.format(Date(millis))
+//}
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,16 +81,18 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 10.dp)
+            .padding(horizontal = 15.dp, vertical = 8.dp)
+            .height(80.dp)
     ) {
 
 
-        Row(horizontalArrangement = Arrangement.Center) {
+        Row() {
             Text(
                 text = nombre,
-                fontSize = 25.sp,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(8.dp).fillMaxWidth()
             )
         }
@@ -103,29 +100,29 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
 
         Row(
             modifier = Modifier
-                .padding(bottom = 10.dp),
+                .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceAround
 
         ) {
             Icon(
                 painter = painterResource(R.drawable.baseline_group_24),
                 contentDescription = "",
                 tint = Color.Gray,
-                modifier = Modifier.padding(start = 10.dp)
+                modifier = Modifier.padding(start = 8.dp)
             )
             Spacer(modifier = Modifier.padding(horizontal = 25.dp))
 
-            //Turno
+            //Text Turno
             Text(text = turno, fontSize = 20.sp, color = MaterialTheme.colorScheme.secondary)
             Spacer(modifier = Modifier.padding(horizontal = 25.dp))
 
-            //Dia
+            //Text Dia
             Text(text = "Dia: $dia", fontSize = 20.sp, color = MaterialTheme.colorScheme.secondary)
             Spacer(modifier = Modifier.padding(horizontal = 15.dp))
 
-            //Borrar
-            IconButton(onClick={ showConfirmDelete = true}
+            //Icon Borrar
+            IconButton(onClick={ showConfirmDelete = true},
             ) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar", tint = Color.Gray)
             }
@@ -140,15 +137,12 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
                     showConfirmDelete = false
                 },
                 onDismiss = { showConfirmDelete=false})
-            val context = LocalContext
+
 
         }
     }
 
-//    LaunchedEffect(Unit) {
-//        var personal = personalVM.getPersonalById(id)
-//
-//    }
+
 }
 
 @Composable

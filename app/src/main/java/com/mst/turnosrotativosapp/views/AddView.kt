@@ -76,7 +76,7 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
             value = personalVM.personal.nombre,
             onValueChange = { it ->
                 if(it.length < 4){
-                    personalVM.onValueChange(it.uppercase()) }
+                    personalVM.onValueChange(it.uppercase().trim()) }
                 },
             label = "Personal",
 

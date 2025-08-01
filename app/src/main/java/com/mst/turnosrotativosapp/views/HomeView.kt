@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DatePicker
@@ -66,7 +68,7 @@ fun HomeView(navController: NavController, personalVM: PersonalViewModel){
             )
         }, containerColor = MaterialTheme.colorScheme.inversePrimary,
         floatingActionButton = {
-            FloatButton { navController.navigate("AddView") }
+            FloatButton{ navController.navigate("AddView") }
         }
 
     ) {
@@ -134,9 +136,10 @@ fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
                         state = datePickerState,
                         title = {
                             Text(
-                                text = "Selleccionar fecha",
+                                text = "Seleccionar fecha",
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(start = 10.dp, top = 8.dp)
                             )
                         },
 

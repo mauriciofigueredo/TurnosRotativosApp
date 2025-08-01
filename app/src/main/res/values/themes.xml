@@ -3,15 +3,15 @@
     <!-- Base application theme. -->
     <style name="Theme.TurnosRotativosApp" parent="android:Theme.Material.Light.NoActionBar" />
     <!-- Tema para la Splash Screen -->
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-       <!-- Establece el fondo de la splash screen. Puedes usar un color o un drawable.-->
-        <item name="windowSplashScreenBackground">@color/blue</item>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen"> <!--SplashScreen -->
+       <!-- Establece el fondo de la splash screen. Puedes usar un color o un drawable.
+        <item name="windowSplashScreenBackground">@color/white</item>-->
         <!-- Establece el icono en el centro de la splash screen. -->
         <!-- Asegúrate de tener un drawable llamado 'splash_icon' en res/drawable. -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/fondo_grupo_trabajo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/construction_workers</item>
         <!-- Opcional: Establece un icono para la parte inferior (branding). -->
         <!-- <item name="windowSplashScreenAnimationDuration">2000</item> // Duración de la animación -->
-        <!-- <item name="postSplashScreenTheme">@style/Theme.YourApp</item> // Tema a aplicar después de la splash -->
+        <item name="postSplashScreenTheme">@style/Theme.TurnosRotativosApp</item> // Tema a aplicar después de la splash
     </style>
 
 

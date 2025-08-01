@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 import com.mst.turnosrotativosapp.views.AddView
-import com.mst.turnosrotativosapp.views.EditView
+
 import com.mst.turnosrotativosapp.views.HomeView
 
 
@@ -22,14 +22,14 @@ fun NavManager(personalVM: PersonalViewModel){
         composable("AddView"){
             AddView(navController, personalVM)
         }
-        composable("EditView/{personalNombre}"){it ->
-            val personalNombre = it.arguments?.getString("personalNombre")
-            Log.d("ParamEditView","Valor: $personalNombre")
-            if ( personalNombre != null){
-                EditView(navController, personalVM, personalNombre)
-            }else{
-                Text("Error, nombre no encontrado")
-            }
-        }
+//        composable("EditView/{personalNombre}"){it ->
+//            val personalNombre = it.arguments?.getString("personalNombre")
+//            Log.d("ParamEditView","Valor: $personalNombre")
+//            if ( personalNombre != null){
+//                EditView(navController, personalVM, personalNombre)
+//            }else{
+//                Text("Error, nombre no encontrado")
+//            }
+//        }
     }
 }
