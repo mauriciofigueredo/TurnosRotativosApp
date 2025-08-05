@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         // En una aplicación real, esto podría ser una llamada a una API, carga de base de datos, etc.
         // Puedes usar un Handler o Coroutines para esto.
         lifecycleScope.launch {
-            delay(1000)
+            delay(700)
             keepSplashScreenOn = false
         }
 

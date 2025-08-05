@@ -2,7 +2,6 @@ package com.mst.turnosrotativosapp.viewmodel
 
 
 import android.util.Log
-import android.util.Log.e
 import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.runtime.getValue
@@ -13,18 +12,16 @@ import androidx.lifecycle.viewModelScope
 import com.mst.turnosrotativosapp.model.Personal
 import com.mst.turnosrotativosapp.repository.PersonalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
-import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -88,8 +85,8 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
 
 
         fun calcularTurno(personal: Personal): Pair<String, Int> {
-            var turno: String = ""
-            var dia: Int = 0
+            var turno = ""
+            var dia = 0
 
                             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                             val fechaTurno: LocalDate = LocalDate.parse(personal.fecha_ini, formatter)
