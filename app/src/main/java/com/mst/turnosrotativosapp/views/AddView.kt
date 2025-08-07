@@ -109,7 +109,7 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
 
             val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
             val fechaActual: LocalDate = LocalDate.now()
-            if(selectDate.isBefore(fechaActual)){
+            if(selectDate <= fechaActual){
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
                 println("Fecha ss -> $selectDate")
                 Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - ${selectDate.month}")
