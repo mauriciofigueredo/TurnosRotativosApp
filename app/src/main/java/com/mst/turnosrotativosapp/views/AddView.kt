@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +41,7 @@ import com.mst.turnosrotativosapp.viewmodel.PersonalViewModel
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,18 +110,22 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
         date?.let {
 
             val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+
+            val locale = Locale.getDefault()
+            var mes = selectDate.month.getDisplayName(java.time.format.TextStyle.FULL, locale).capitalize()
+
             val fechaActual: LocalDate = LocalDate.now()
             if(selectDate <= fechaActual){
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
                 println("Fecha ss -> $selectDate")
-                Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - ${selectDate.month}")
+                Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - $mes", fontSize = 18.sp)
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
                 //if(personalVM.personal.nombre.isNotEmpty()){
                 FilledTonalButton(
                     onClick = {personalVM.addPersonal(
                         Personal(nombre = personalVM.personal.nombre,
-                            fecha_ini = selectDate.toString()
-                            //fecha_ini = state.selectedDateMillis.toString()
+                            fechaIni = selectDate.toString()
+                            //fechaIni = state.selectedDateMillis.toString()
                         ))
                         personalVM.onValueChange("")
                         navController.popBackStack()},

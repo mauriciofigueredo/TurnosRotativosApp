@@ -7,9 +7,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/baseline_change_circle_24"
+        android:icon="@mipmap/rotativos"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/baseline_change_circle_24"
+        android:roundIcon="@mipmap/rotativos"
         android:supportsRtl="true"
         android:theme="@style/Theme.TurnosRotativosApp"
         tools:targetApi="31">

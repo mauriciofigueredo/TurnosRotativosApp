@@ -19,9 +19,7 @@ import kotlinx.coroutines.launch
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
-import java.util.Locale
 import javax.inject.Inject
 
 
@@ -89,7 +87,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
             var dia = 0
 
                             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                            val fechaTurno: LocalDate = LocalDate.parse(personal.fecha_ini, formatter)
+                            val fechaTurno: LocalDate = LocalDate.parse(personal.fechaIni, formatter)
                             val diff: Long = ChronoUnit.DAYS.between(fechaTurno, selectedDate.value )
                             println("diff dias: $diff")
                             dia = calculoDia(diff)
