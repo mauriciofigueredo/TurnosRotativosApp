@@ -5,10 +5,13 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DatePicker
@@ -19,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,8 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -59,8 +63,7 @@ fun AddView(navController: NavController, personalVM: PersonalViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddContent(paddingValues: PaddingValues, navController: NavController, personalVM: PersonalViewModel)
-{
+fun AddContent(paddingValues: PaddingValues, navController: NavController, personalVM: PersonalViewModel) {
     val context = LocalContext.current
 
     Column(
@@ -74,33 +77,56 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
     ) {
 
         MainTextField(
-            value = personalVM.personal.nombre,
+            value = personalVM.personal.sector,
             onValueChange = { it ->
-                if(it.length < 4){
-                    personalVM.onValueChange(it.uppercase().trim()) }
-                },
-            label = "Personal",
-
+                if (it.length < 2) {
+                    personalVM.onSectorChange(it.uppercase().trim())
+                }
+            },
+            label = "Sector",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
+        MainTextField(
+            value = personalVM.personal.codigo.toString(),
+            onValueChange = { it ->
+                if (it.length < 3) {
+                    personalVM.onCodigoChange(it.toInt())
+                }
+            },
+            label = "Sector",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+
         Spacer(modifier = Modifier.padding(vertical = 15.dp))
 
         //-----Date Picker
         var showDate by remember { mutableStateOf(false) }
 
 
-        Button(onClick = {showDate = !showDate}) { Text("Asignar Fecha") }
+        Button(onClick = { showDate = !showDate }) { Text("Asignar Fecha") }
 
         val state = rememberDatePickerState()
 
-        if (showDate){
+        if (showDate) {
             DatePickerDialog(
-                onDismissRequest = {showDate = !showDate},
-                confirmButton = {Button(onClick = {showDate = !showDate}) {Text("Aceptar") }},
-                dismissButton = { OutlinedButton(onClick = {showDate = !showDate}) {Text("Cancelar") } }
+                onDismissRequest = { showDate = !showDate },
+                confirmButton = { Button(onClick = { showDate = !showDate }) { Text("Aceptar") } },
+                dismissButton = {
+                    OutlinedButton(onClick = {
+                        showDate = !showDate
+                    }) { Text("Cancelar") }
+                }
             ) {
-                DatePicker(state = state, title = {
-                    Text(text = "Seleccionar fecha", modifier = Modifier.padding(start = 10.dp, top = 8.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                },
+                DatePicker(
+                    state = state,
+                    title = {
+                        Text(
+                            text = "Seleccionar fecha",
+                            modifier = Modifier.padding(start = 10.dp, top = 8.dp),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
 
                     )
 
@@ -112,36 +138,42 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
             val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
 
             val locale = Locale.getDefault()
-            var mes = selectDate.month.getDisplayName(java.time.format.TextStyle.FULL, locale).capitalize()
+            var mes = selectDate.month.getDisplayName(java.time.format.TextStyle.FULL, locale)
+                .capitalize()
 
             val fechaActual: LocalDate = LocalDate.now()
-            if(selectDate <= fechaActual){
+            if (selectDate <= fechaActual) {
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
                 println("Fecha ss -> $selectDate")
                 Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - $mes", fontSize = 18.sp)
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
-                //if(personalVM.personal.nombre.isNotEmpty()){
+
                 FilledTonalButton(
-                    onClick = {personalVM.addPersonal(
-                        Personal(nombre = personalVM.personal.nombre,
-                            fechaIni = selectDate.toString()
-                            //fechaIni = state.selectedDateMillis.toString()
-                        ))
-                        personalVM.onValueChange("")
-                        navController.popBackStack()},
+                    onClick = {
+                        personalVM.addPersonal(
+                            Personal(
+                                codigo = personalVM.personal.codigo,
+                                fechaIni = selectDate.toString()
+
+                            )
+                        )
+                        personalVM.onCodigoChange(0)
+                        personalVM.onSectorChange("0")
+                        navController.popBackStack()
+                    },
                     border = BorderStroke(1.dp, Color.Cyan),
                     shape = CircleShape,
-                    enabled = personalVM.personal.nombre.isNotEmpty()
+                    enabled = personalVM.personal.codigo > 0
                 ) { Text("Agregar") }
-            }else
-            {
+            } else {
                 showToast(context, "Debe seleccionar una fecha anterior a la de hoy")
+
             }
 
         }
 
-
     }
+
 }
 
 fun showToast(context: Context, message: String) {

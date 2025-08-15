@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,11 +49,12 @@ fun MainTitle(title: String, color: Color ) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String) {
+fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String, keyboardOptions: KeyboardOptions) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(text = label) },
+        keyboardOptions = keyboardOptions,
         modifier = Modifier
             .padding(bottom = 15.dp)
             .fillMaxWidth()

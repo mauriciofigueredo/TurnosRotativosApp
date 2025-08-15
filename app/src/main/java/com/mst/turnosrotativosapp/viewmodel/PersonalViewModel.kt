@@ -44,8 +44,12 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     }
 
 
-    fun onValueChange(value: String) {
-        personal = personal.copy(nombre = value)
+    fun onCodigoChange(value: Int) {
+        personal = personal.copy(codigo = value)
+    }
+
+    fun onSectorChange(value: String) {
+        personal = personal.copy(sector = value)
     }
 
     init {

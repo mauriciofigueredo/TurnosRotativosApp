@@ -3,8 +3,8 @@ package com.mst.turnosrotativosapp.views
 
 
 
-import android.content.res.Configuration
-import android.provider.DocumentsContract
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -39,11 +38,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -59,6 +55,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(navController: NavController, personalVM: PersonalViewModel){
@@ -81,6 +78,7 @@ fun HomeView(navController: NavController, personalVM: PersonalViewModel){
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
@@ -184,18 +182,19 @@ fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
 
            var lista = personalVM.personalList.collectAsState()
 
-
+//-----------------------------------------------------------------------------------
        LazyColumn(modifier = Modifier.fillMaxWidth()) {
            items(lista.value) { item ->
                val (turno, dia) = personalVM.calcularTurno(item)
-               PersonalCard(item.id, item.nombre, turno, dia.toString(), personalVM) //item.turno, item.dia, personalVM
+               PersonalCard(item.id, item.codigo.toString(), turno, dia.toString(), personalVM) //item.turno, item.dia, personalVM
 
            }
        }}
 
-
-
     }
+
+
+
 
 
 

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.mst.turnosrotativosapp.model.Personal
 
 
-@Database(entities = [Personal::class], version = 3, exportSchema = false)
+@Database(entities = [Personal::class], version = 5, exportSchema = false)
 abstract class PersonalDataBase: RoomDatabase() {
     abstract fun personalDao(): PersonalDao
 }
