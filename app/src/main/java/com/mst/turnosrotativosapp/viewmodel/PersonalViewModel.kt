@@ -1,12 +1,14 @@
 package com.mst.turnosrotativosapp.viewmodel
 
 
+import android.os.DeadObjectException
 import android.util.Log
 import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mst.turnosrotativosapp.model.Personal
@@ -30,7 +32,12 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     val personalList = _personalList.asStateFlow()
 
     //Variable para manipular los valores que va ingresando el usuario
-    var personal by mutableStateOf(PersonalState())
+    var personal by mutableStateOf(Personal(
+        0,
+        sector = "",
+        codigo = 0,
+        fechaIni = ""
+    ))
         private set
 
 
@@ -41,11 +48,6 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     fun selectedDateChange(fecha: LocalDate) {
         _selectedDate.value = fecha
         //fechaEvaluar = fecha
-    }
-
-
-    fun onCodigoChange(value: Int) {
-        personal = personal.copy(codigo = value)
     }
 
     fun onSectorChange(value: String) {
@@ -66,7 +68,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
                 }
             }
 
-        } catch (e: android.os.DeadObjectException) {
+        } catch (e: DeadObjectException) {
             // The remote object died, handle it (e.g., re-bind to the service, show an error)
             Log.e("Init VM", "Service died: ${e.message}")
             // Consider re-binding the service if appropriate
@@ -79,7 +81,15 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
     }
 
     fun addPersonal(personal: Personal) =
-        viewModelScope.launch { repository.addPersonal(personal) }
+        viewModelScope.launch {
+            try {
+                println("agrega $personal")
+                repository.addPersonal(personal)
+            }catch (e: Error){
+                Log.d("Error", "No se pudo guardar el registro")
+            }
+
+        }
 
 
     fun deletePersonal(id: Long) =
@@ -93,7 +103,7 @@ class PersonalViewModel @Inject constructor(private val repository: PersonalRepo
                             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                             val fechaTurno: LocalDate = LocalDate.parse(personal.fechaIni, formatter)
                             val diff: Long = ChronoUnit.DAYS.between(fechaTurno, selectedDate.value )
-                            println("diff dias: $diff")
+
                             dia = calculoDia(diff)
                             val resto: Int = diff.toInt() % 6
 

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PersonalDao {
 
-    @Query("select * from personal order by codigo")
+    @Query("select * from personal order by codigo  ")
     fun getAll(): Flow<List<Personal>>
 
    @Insert(onConflict = OnConflictStrategy.REPLACE)

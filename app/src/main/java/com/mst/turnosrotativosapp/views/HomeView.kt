@@ -171,22 +171,18 @@ fun HomeContent(paddingValues: PaddingValues, personalVM: PersonalViewModel) {
             }
         }
         }
-            //----------------
-
 
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
             color = MaterialTheme.colorScheme.primary,
-
             )
 
            var lista = personalVM.personalList.collectAsState()
-
 //-----------------------------------------------------------------------------------
        LazyColumn(modifier = Modifier.fillMaxWidth()) {
            items(lista.value) { item ->
                val (turno, dia) = personalVM.calcularTurno(item)
-               PersonalCard(item.id, item.codigo.toString(), turno, dia.toString(), personalVM) //item.turno, item.dia, personalVM
+               PersonalCard(item.id, item.sector, item.codigo.toString(), turno, dia.toString(), personalVM) //item.turno, item.dia, personalVM
 
            }
        }}

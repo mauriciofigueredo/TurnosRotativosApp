@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,6 +53,7 @@ fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String,
         value = value,
         onValueChange = onValueChange,
         label = { Text(text = label) },
+        singleLine  = true,
         keyboardOptions = keyboardOptions,
         modifier = Modifier
             .padding(bottom = 15.dp)
@@ -63,16 +63,10 @@ fun MainTextField(value: String, onValueChange: (String) -> Unit, label: String,
 }
 
 
-
-//fun convertMillisToDate(millis: Long): String {
-//    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-//    return formatter.format(Date(millis))
-//}
-
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM: PersonalViewModel) {
+fun PersonalCard(id:Long, sector: String, codigo: String, turno: String, dia: String, personalVM: PersonalViewModel) {
     var showConfirmDelete by remember{ mutableStateOf(false)}
 
     Card(
@@ -91,7 +85,7 @@ fun PersonalCard(id:Long, nombre: String, turno: String, dia: String, personalVM
 
         Row() {
             Text(
-                text = nombre,
+                text = "$sector $codigo",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

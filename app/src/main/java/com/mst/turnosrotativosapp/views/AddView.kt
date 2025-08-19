@@ -5,11 +5,9 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -22,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -66,6 +63,8 @@ fun AddView(navController: NavController, personalVM: PersonalViewModel) {
 fun AddContent(paddingValues: PaddingValues, navController: NavController, personalVM: PersonalViewModel) {
     val context = LocalContext.current
 
+    var textoCodigo by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -76,24 +75,30 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+
         MainTextField(
             value = personalVM.personal.sector,
             onValueChange = { it ->
                 if (it.length < 2) {
+                    println("sector $it") //hasta aqui funciona
                     personalVM.onSectorChange(it.uppercase().trim())
                 }
             },
             label = "Sector",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
+
+
+        //-------------------Codigo
         MainTextField(
-            value = personalVM.personal.codigo.toString(),
+
+            value = textoCodigo,
             onValueChange = { it ->
                 if (it.length < 3) {
-                    personalVM.onCodigoChange(it.toInt())
+                    textoCodigo = it
                 }
             },
-            label = "Sector",
+            label = "ID",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
@@ -127,16 +132,13 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
                             fontWeight = FontWeight.Bold
                         )
                     },
-
                     )
-
             }
         }
         val date = state.selectedDateMillis
         date?.let {
 
             val selectDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
-
             val locale = Locale.getDefault()
             var mes = selectDate.month.getDisplayName(java.time.format.TextStyle.FULL, locale)
                 .capitalize()
@@ -144,36 +146,39 @@ fun AddContent(paddingValues: PaddingValues, navController: NavController, perso
             val fechaActual: LocalDate = LocalDate.now()
             if (selectDate <= fechaActual) {
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
-                println("Fecha ss -> $selectDate")
+
                 Text(text = "Fecha seleccionada: ${selectDate.dayOfMonth} - $mes", fontSize = 18.sp)
                 Spacer(modifier = Modifier.padding(vertical = 20.dp))
 
                 FilledTonalButton(
                     onClick = {
-                        personalVM.addPersonal(
-                            Personal(
-                                codigo = personalVM.personal.codigo,
-                                fechaIni = selectDate.toString()
-
+                        try {
+                            personalVM.addPersonal(
+                                Personal(
+                                    sector = personalVM.personal.sector,
+                                    codigo = textoCodigo.trim().toInt(),
+                                    fechaIni = selectDate.toString()
+                                )
                             )
-                        )
-                        personalVM.onCodigoChange(0)
-                        personalVM.onSectorChange("0")
-                        navController.popBackStack()
+                        }catch (e: Error){
+                            println("Error Add ${e.message}")
+                        }
+                        try {
+                            personalVM.onSectorChange("")
+                            navController.popBackStack()
+                        }catch (e: Error){
+                            println("Error goBack ${e.message}")
+                        }
                     },
                     border = BorderStroke(1.dp, Color.Cyan),
                     shape = CircleShape,
-                    enabled = personalVM.personal.codigo > 0
+                    enabled = textoCodigo.toInt() > 0
                 ) { Text("Agregar") }
             } else {
                 showToast(context, "Debe seleccionar una fecha anterior a la de hoy")
-
             }
-
         }
-
     }
-
 }
 
 fun showToast(context: Context, message: String) {
